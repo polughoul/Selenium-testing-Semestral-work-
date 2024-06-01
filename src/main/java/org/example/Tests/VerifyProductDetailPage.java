@@ -13,13 +13,14 @@ public class VerifyProductDetailPage {
     @Test
     public void verifyProductDetails() {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
-
+////asdasdasdasd
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
 
         WebDriver driver = new ChromeDriver(options);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
+
 
         driver.get("http://automationexercise.com");
 
