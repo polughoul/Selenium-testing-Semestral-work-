@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class VerifyProductDetailPage {
     @Test
     public void verifyProductDetails() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
 
+        System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
 
