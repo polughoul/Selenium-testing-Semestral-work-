@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.assertEquals;
 
+
 public class VerifySubscriptionTest {
     static WebDriver driver;
 
@@ -61,6 +62,7 @@ public class VerifySubscriptionTest {
             e.printStackTrace();
         }
     }
+
 
     @AfterClass
     public static void tearDown() {

@@ -91,6 +91,8 @@ public class AddProductsInCartTest {
 
         Thread.sleep(3000);
 
+
+
         assertEquals("Rs. 500", firstProductPrice.getText());
         assertEquals("1", firstProductQuantity.getText());
         assertEquals("Rs. 500", firstProductTotal.getText());

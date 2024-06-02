@@ -46,6 +46,7 @@ public class SearchProductTest {
 
         Thread.sleep(2000);
 
+
         String currentUrl = driver.getCurrentUrl();
         System.out.println("Current URL: " + currentUrl);
 

@@ -18,6 +18,7 @@ public class VerifyProductDetailPage {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
 
+
         WebDriver driver = new ChromeDriver(options);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);

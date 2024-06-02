@@ -23,9 +23,6 @@ import static org.junit.Assert.assertEquals;
 public class ContactUsFormTest {
     WebDriver driver;
 
-    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
-    WebElement consentButton;
-
     @FindBy(css = "a[href='/contact_us']")
     WebElement contactUsButton;
 
@@ -62,8 +59,6 @@ public class ContactUsFormTest {
     @Test
     public void contactUsFormTest() throws Exception {
         driver.get("http://automationexercise.com");
-
-//        consentButton.click();
 
         contactUsButton.click();
 
