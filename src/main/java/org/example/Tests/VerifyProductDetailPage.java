@@ -3,6 +3,7 @@ package org.example.Tests;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -23,9 +24,10 @@ public class VerifyProductDetailPage {
 
         driver.get("http://automationexercise.com");
 
-//      driver.findElement(By.cssSelector(".fc-button.fc-cta-consent.fc-primary-button")).click();
-
         driver.findElement(By.xpath("//a[contains(text(), 'Products')]")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,250)", "");
 
         driver.findElement(By.xpath("(//a[contains(text(), 'View Product')])[1]")).click();
 
