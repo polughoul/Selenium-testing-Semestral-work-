@@ -5,11 +5,11 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -19,18 +19,29 @@ import static org.junit.Assert.assertEquals;
 public class SearchProductTest {
     WebDriver driver;
 
+    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
+    WebElement consentButton;
+
+    @FindBy(css = "a[href='/products']")
+    WebElement productsButton;
+
+    @FindBy(id = "search_product")
+    WebElement searchInput;
+
+    @FindBy(id = "submit_search")
+    WebElement searchButton;
+
     @Before
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
         driver = new ChromeDriver();
+        PageFactory.initElements(driver, this);
     }
 
     @Test
     public void searchProductTest() throws Exception {
         driver.get("http://automationexercise.com");
-        driver.findElement(By.cssSelector(".fc-button.fc-cta-consent.fc-primary-button")).click();
-
-        WebElement productsButton = driver.findElement(By.cssSelector("a[href='/products']"));
+        consentButton.click();
         productsButton.click();
 
         Reader in = new FileReader("src/main/java/data2.csv");
@@ -38,14 +49,10 @@ public class SearchProductTest {
         CSVRecord productRecord = records.iterator().next();
         String productName = productRecord.get(0);
 
-        WebElement searchInput = driver.findElement(By.id("search_product"));
         searchInput.sendKeys(productName);
-
-        WebElement searchButton = driver.findElement(By.id("submit_search"));
         searchButton.click();
 
         Thread.sleep(2000);
-
 
         String currentUrl = driver.getCurrentUrl();
         System.out.println("Current URL: " + currentUrl);

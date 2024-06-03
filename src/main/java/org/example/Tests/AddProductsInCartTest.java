@@ -74,7 +74,6 @@ public class AddProductsInCartTest {
         js.executeScript("window.scrollBy(0,250)", "");
 
         actions.moveToElement(firstProduct).perform();
-        Thread.sleep(2000);
         firstProduct.click();
 
         Thread.sleep(2000);
@@ -83,15 +82,12 @@ public class AddProductsInCartTest {
         Thread.sleep(2000);
 
         actions.moveToElement(secondProduct).perform();
-        Thread.sleep(3000);
         secondProduct.click();
 
         Thread.sleep(3000);
         cartButton.click();
 
         Thread.sleep(3000);
-
-
 
         assertEquals("Rs. 500", firstProductPrice.getText());
         assertEquals("1", firstProductQuantity.getText());
