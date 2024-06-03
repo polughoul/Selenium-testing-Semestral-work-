@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,9 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class VerifyProductDetailPage {
     WebDriver driver;
     WebDriverWait wait;
-
-    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
-    WebElement consentButton;
 
     @FindBy(xpath = "//a[contains(text(), 'Products')]")
     WebElement productsLink;
@@ -43,13 +41,15 @@ public class VerifyProductDetailPage {
     @Test
     public void verifyProductDetails() throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
+        driver = new ChromeDriver(options);
+
         wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
 
         driver.get("http://automationexercise.com");
 
-        consentButton.click();
         productsLink.click();
 
         Thread.sleep(2000);
@@ -63,26 +63,26 @@ public class VerifyProductDetailPage {
 
         Thread.sleep(3000);
 
-        String productName = productNameElement.getText();
-        String productCategory = productCategoryElement.getText();
-        String productPrice = productPriceElement.getText();
-        String productAvailability = wait.until(ExpectedConditions.visibilityOf(productAvailabilityElement)).getText();
-        String productCondition = wait.until(ExpectedConditions.visibilityOf(productConditionElement)).getText();
-        String productBrand = wait.until(ExpectedConditions.visibilityOf(productBrandElement)).getText();
+        String expectedProductName = "Blue Top";
+        String expectedProductCategory = "Category: Women > Tops";
+        String expectedProductPrice = "Rs. 500";
+        String expectedProductAvailability = "Availability: In Stock";
+        String expectedProductCondition = "Condition: New";
+        String expectedProductBrand = "Brand: Polo";
 
-        System.out.println("Product Name: " + productName);
-        System.out.println("Product Category: " + productCategory);
-        System.out.println("Product Price: " + productPrice);
-        System.out.println("Product Availability: " + productAvailability);
-        System.out.println("Product Condition: " + productCondition);
-        System.out.println("Product Brand: " + productBrand);
+        String actualProductName = wait.until(ExpectedConditions.visibilityOf(productNameElement)).getText();
+        String actualProductCategory = wait.until(ExpectedConditions.visibilityOf(productCategoryElement)).getText();
+        String actualProductPrice = wait.until(ExpectedConditions.visibilityOf(productPriceElement)).getText();
+        String actualProductAvailability = wait.until(ExpectedConditions.visibilityOf(productAvailabilityElement)).getText();
+        String actualProductCondition = wait.until(ExpectedConditions.visibilityOf(productConditionElement)).getText();
+        String actualProductBrand = wait.until(ExpectedConditions.visibilityOf(productBrandElement)).getText();
 
-        Assert.assertEquals("Product name does not match", productName, productNameElement.getText());
-        Assert.assertEquals("Product category does not match", productCategory, productCategoryElement.getText());
-        Assert.assertEquals("Product price does not match", productPrice, productPriceElement.getText());
-        Assert.assertEquals("Product availability does not match", productAvailability, wait.until(ExpectedConditions.visibilityOf(productAvailabilityElement)).getText());
-        Assert.assertEquals("Product condition does not match", productCondition, wait.until(ExpectedConditions.visibilityOf(productConditionElement)).getText());
-        Assert.assertEquals("Product brand does not match", productBrand, wait.until(ExpectedConditions.visibilityOf(productBrandElement)).getText());
+        Assert.assertEquals("Product name does not match", expectedProductName, actualProductName);
+        Assert.assertEquals("Product category does not match", expectedProductCategory, actualProductCategory);
+        Assert.assertEquals("Product price does not match", expectedProductPrice, actualProductPrice);
+        Assert.assertEquals("Product availability does not match", expectedProductAvailability, actualProductAvailability);
+        Assert.assertEquals("Product condition does not match", expectedProductCondition, actualProductCondition);
+        Assert.assertEquals("Product brand does not match", expectedProductBrand, actualProductBrand);
 
         driver.quit();
     }
