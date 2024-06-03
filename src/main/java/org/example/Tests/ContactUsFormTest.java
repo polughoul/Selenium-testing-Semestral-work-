@@ -24,9 +24,6 @@ import static org.junit.Assert.assertEquals;
 public class ContactUsFormTest {
     WebDriver driver;
 
-    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
-    WebElement consentButton;
-
     @FindBy(css = "a[href='/contact_us']")
     WebElement contactUsButton;
 
@@ -54,15 +51,15 @@ public class ContactUsFormTest {
     @Before
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
+        driver = new ChromeDriver(options);
         PageFactory.initElements(driver, this);
     }
 
     @Test
     public void contactUsFormTest() throws Exception {
         driver.get("http://automationexercise.com");
-
-        consentButton.click();
         contactUsButton.click();
 
         Reader in = new FileReader("src/main/java/data1.csv");
@@ -113,7 +110,7 @@ public class ContactUsFormTest {
 
             homeButton.click();
 
-            Thread.sleep(15000);
+            Thread.sleep(2000);
             assertEquals("https://automationexercise.com/", driver.getCurrentUrl());
         }
     }
