@@ -10,9 +10,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -23,6 +23,9 @@ import static org.junit.Assert.assertEquals;
 
 public class ContactUsFormTest {
     WebDriver driver;
+
+    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
+    WebElement consentButton;
 
     @FindBy(css = "a[href='/contact_us']")
     WebElement contactUsButton;
@@ -51,15 +54,18 @@ public class ContactUsFormTest {
     @Before
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         PageFactory.initElements(driver, this);
     }
 
     @Test
     public void contactUsFormTest() throws Exception {
         driver.get("http://automationexercise.com");
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        consentButton.click();
+
         contactUsButton.click();
 
         Reader in = new FileReader("src/main/java/data1.csv");
@@ -76,13 +82,13 @@ public class ContactUsFormTest {
             String message = record.get("message").trim();
 
             nameInput.sendKeys(name);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             emailInput.sendKeys(email);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             subjectInput.sendKeys(subject);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             messageInput.sendKeys(message);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
             String relativePath = "src/main/java/org/example/Tests/test.docx";
             String absolutePath = Paths.get(relativePath).toAbsolutePath().toString();
@@ -101,7 +107,7 @@ public class ContactUsFormTest {
             Thread.sleep(2000);
 
             submitButton.click();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
             Alert alert = driver.switchTo().alert();
             alert.accept();
@@ -110,7 +116,7 @@ public class ContactUsFormTest {
 
             homeButton.click();
 
-            Thread.sleep(2000);
+            wait.until(driver -> driver.getCurrentUrl().equals("https://automationexercise.com/"));
             assertEquals("https://automationexercise.com/", driver.getCurrentUrl());
         }
     }

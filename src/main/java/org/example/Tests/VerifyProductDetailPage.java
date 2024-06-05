@@ -1,10 +1,11 @@
 package org.example.Tests;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,6 +14,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class VerifyProductDetailPage {
     WebDriver driver;
     WebDriverWait wait;
+
+    @FindBy(css = ".fc-button.fc-cta-consent.fc-primary-button")
+    WebElement consentButton;
 
     @FindBy(xpath = "//a[contains(text(), 'Products')]")
     WebElement productsLink;
@@ -38,17 +42,21 @@ public class VerifyProductDetailPage {
     @FindBy(xpath = "//p[contains(., 'Brand:')]")
     WebElement productBrandElement;
 
+    @Before
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
+        driver = new ChromeDriver();
+        PageFactory.initElements(driver, this);
+    }
+
     @Test
     public void verifyProductDetails() throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=C:\\Users\\andre\\AppData\\Local\\Google\\Chrome\\User Data\\default");
-        driver = new ChromeDriver(options);
 
         wait = new WebDriverWait(driver, 10);
-        PageFactory.initElements(driver, this);
 
         driver.get("http://automationexercise.com");
+
+        consentButton.click();
 
         productsLink.click();
 
@@ -61,7 +69,7 @@ public class VerifyProductDetailPage {
 
         viewProductLink.click();
 
-        Thread.sleep(3000);
+        wait.until(ExpectedConditions.visibilityOf(productNameElement));
 
         String expectedProductName = "Blue Top";
         String expectedProductCategory = "Category: Women > Tops";
@@ -83,7 +91,10 @@ public class VerifyProductDetailPage {
         Assert.assertEquals("Product availability does not match", expectedProductAvailability, actualProductAvailability);
         Assert.assertEquals("Product condition does not match", expectedProductCondition, actualProductCondition);
         Assert.assertEquals("Product brand does not match", expectedProductBrand, actualProductBrand);
+    }
 
+    @After
+    public void tearDown() {
         driver.quit();
     }
 }
