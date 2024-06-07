@@ -1,16 +1,11 @@
 package org.example.Tests;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.example.ArticlePage;
-import org.example.HomePage;
-import org.example.LoginPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,40 +14,68 @@ import static org.junit.Assert.assertEquals;
 
 public class LogInTest {
     static WebDriver driver;
-    static HomePage homePage;
-    static LoginPage loginPage;
-    static ArticlePage articlePage;
 
     @BeforeClass
     public static void setup() {
         System.setProperty("webdriver.chrome.driver", "chromedriver-win64/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-
-        homePage = new HomePage(driver);
-        loginPage = new LoginPage(driver);
-        articlePage = new ArticlePage(driver);
     }
+
     @Test
     public void searchArticlesAndVerifyDetails() {
-        // Navigate to the login page
-        homePage.navigateToLoginPage();
+        driver.get("https://automationexercise.com/");
+
+        // Wait for the "Consent" button to be clickable
+        WebDriverWait wait = new WebDriverWait(driver, 10); // Adjust timeout as needed
+        WebElement consentButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[@class='fc-button-label' and text()='Consent']")));
+
+        // Click on the "Consent" button
+        consentButton.click();
+
+        // Wait for the "Signup / Login" link to be clickable
+        WebElement loginLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/login']/i[contains(@class, 'fa-lock')]")));
+
+        // Click on the "Signup / Login" link
+        loginLink.click();
+
+        // Wait for the "Email Address" and "Password" input fields to be present
+        WebElement emailInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa='login-email']")));
+        WebElement passwordInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa='login-password']")));
+        WebElement loginButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button[data-qa='login-button']")));
+
+        // Set values for the input fields
+        String email = "asdasd123@gmail.com";
+        String password = "123456";
+
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        // Verify the email and password
+        String enteredEmail = emailInput.getAttribute("value");
+        String enteredPassword = passwordInput.getAttribute("value");
 
 
-        loginPage.login("valera.nabok.r@gmail.com", "Valera123789");
-        // Wait for the element to be clickable
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        assertEquals("The email entered does not match the expected email.", email, enteredEmail);
+        assertEquals("The password entered does not match the expected password.", password, enteredPassword);
+        loginButton.click();
 
-        // Add a slight delay before clicking the element
-        try {
-            Thread.sleep(5000); // 5 second delay
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        // Wait for the logged-in message to be present
+//        WebElement loggedInAsElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(., 'Logged in as')]/b")));
+//        String loggedInAsText = loggedInAsElement.getText();
+//
+//        // Print or use the text as needed
+//        System.out.println("Logged in as: " + loggedInAsText);
+
+
+        WebElement deleteAccountLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/delete_account' and contains(., 'Delete Account')]")));
+        deleteAccountLink.click();
+
+        WebElement continueButton2 = driver.findElement(By.cssSelector("a[data-qa='continue-button']"));
+        continueButton2.click();
     }
+
     @AfterClass
     public static void tearDown() {
         driver.quit();
     }
-
 }
