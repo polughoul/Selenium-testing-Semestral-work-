@@ -109,6 +109,7 @@ public class RegisterUser {
 
         WebElement continueButton2 = driver.findElement(By.cssSelector("a[data-qa='continue-button']"));
         continueButton2.click();
+
     }
     @AfterClass
     public static void tearDown() {
