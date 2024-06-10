@@ -120,7 +120,6 @@ public class PlaceOrder {
         WebElement cart = driver.findElement(By.cssSelector("a[href='/view_cart']"));
         cart.click();
 
-        Thread.sleep(400000);
 
         WebElement checkout = driver.findElement(By.cssSelector("a[class='btn btn-default check_out']"));
         checkout.click();
